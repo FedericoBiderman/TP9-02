@@ -1,3 +1,6 @@
+// app/contact/page.js
+
+"use client";
 
 import { useState } from 'react';
 import styles from './../styles/Contact.module.css';
@@ -23,36 +26,39 @@ export default function Contact() {
 
   return (
     <div className={styles.container}>
-      <h1>Contacto</h1>
+      <h1 className={styles.title}>Contacto</h1>
       {!submitted ? (
         <form className={styles.form} onSubmit={handleSubmit}>
-          <label htmlFor="name">Nombre</label>
+          <label htmlFor="name" className={styles.label}>Nombre</label>
           <input
             type="text"
             id="name"
+            className={styles.input}
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
 
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" className={styles.label}>Email</label>
           <input
             type="email"
             id="email"
+            className={styles.input}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-          <label htmlFor="message">Mensaje</label>
+          <label htmlFor="message" className={styles.label}>Mensaje</label>
           <textarea
             id="message"
+            className={styles.textarea}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
           ></textarea>
 
-          <button type="submit">Enviar</button>
+          <button type="submit" className={styles.button}>Enviar</button>
         </form>
       ) : (
         <p>¡Gracias por contactarnos! Te responderemos pronto.</p>

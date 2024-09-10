@@ -1,20 +1,30 @@
+"use client";
 import { useState } from 'react';
-import styles from './../styles/Login.module.css';
+import styles from './../styles/Register.module.css';
 
-export default function Login() {
+export default function Register() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Lógica de login
-    console.log(email, password);
+    // Lógica de registro
+    console.log(name, email, password);
   };
 
   return (
     <div className={styles.container}>
-      <h1>Iniciar Sesión</h1>
+      <h1>Registro de Usuario</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <label htmlFor="name">Nombre</label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -31,7 +41,7 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Ingresar</button>
+        <button type="submit">Registrarse</button>
       </form>
     </div>
   );

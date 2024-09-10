@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #61dafb 0%, #21a1f1 100%);
+  padding: 2rem;
+  padding-top: 80px; 
+  padding-bottom: 60px;
+}
+.hero {
+  text-align: center;
+  color: white;
+  max-width: 800px;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ctaButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.button {
+  background-color: white;
+  color: #21a1f1;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #f0f0f0;
+}
+
+.buttonOutline {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.buttonOutline:hover {
+  background-color: white;
+  color: #21a1f1;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+  }
+
+  .button,
+  .buttonOutline {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+  }
+}
