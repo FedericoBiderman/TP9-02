@@ -1,5 +1,3 @@
-// app/contact/page.js
-
 "use client";
 
 import { useState } from 'react';

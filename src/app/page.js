@@ -1,15 +1,13 @@
 import Link from 'next/link';
 import styles from './styles/page.module.css';
-import Header from './components/Header';
-import Footer from './components/Footer';
+
 
 export default function Page() {
   return (
     <>
-      <Header />
       <div className={styles.container}>
         <section className={styles.hero}>
-          <h1 className={styles.title}>Bienvenido a Eventos</h1>
+          <h1 className={styles.title}>Bienvenido a Bedeco</h1>
           <p className={styles.description}>
             Descubre los mejores eventos de tu ciudad. Participa en conciertos,
             ferias, conferencias y mucho más. ¡No te lo pierdas!
@@ -27,7 +25,6 @@ export default function Page() {
           </div>
         </section>
       </div>
-      <Footer />
     </>
   );
 }

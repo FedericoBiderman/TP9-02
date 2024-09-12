@@ -14,25 +14,27 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
-      <h1>Iniciar Sesión</h1>
+      <h1 className={styles.title}>Iniciar Sesión</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
+      <label htmlFor="email" className={styles.label}>Email</label>
         <input
           type="email"
           id="email"
+          className={styles.input}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <label htmlFor="password">Contraseña</label>
+        <label htmlFor="password" className={styles.label}>Contraseña</label>
         <input
           type="password"
           id="password"
+          className={styles.input}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Ingresar</button>
+       <button type="submit" className={styles.button}>Ingresar</button>
       </form>
     </div>
   );

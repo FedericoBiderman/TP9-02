@@ -7,13 +7,14 @@ export default function EventCard({ event }) {
   const router = useRouter();
 
   const handleViewDetails = () => {
-    router.push(`/detalleEventostitle=${encodeURIComponent(event.title)}&date=${encodeURIComponent(event.date)}`);
+    // Navegar a la ruta dinámica usando el ID del evento
+    router.push(`/eventos/${event.id}`);
   };
 
   return (
     <div className={styles.card}>
-      <h2 className={styles.title}>Event Title</h2>
-      <p className={styles.text}>Event description goes here.</p>
+      <h2 className={styles.title}>{event.title}</h2>
+      <p className={styles.text}>{event.date}</p>
       <button className={styles.button} onClick={handleViewDetails}>
         Ver Detalles
       </button>

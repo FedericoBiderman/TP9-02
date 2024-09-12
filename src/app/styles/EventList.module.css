@@ -1,14 +1,13 @@
-/* styles/EventList.module.css */
 .eventGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .eventGrid {
+    grid-template-columns: 1fr;
   }
-  
-  @media (max-width: 768px) {
-    .eventGrid {
-      grid-template-columns: 1fr;
-    }
-  }
+}
   

@@ -1,4 +1,11 @@
-body{
-    padding: 0;
-    font-family: sans-serif;
-}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  main {
+    padding: 2rem;
+    min-height: 80vh; /* Ajustar la altura mínima para mantener el contenido visible */
+    padding-top: 80px
+  }
