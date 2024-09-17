@@ -1,22 +1,24 @@
 "use client";
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext'; // Ajusta la ruta según la estructura de tu proyecto
 import styles from './../styles/Login.module.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login, errorMessage } = useAuth(); // Obtener la función de login y el mensaje de error del contexto
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de login
-    console.log(email, password);
+    login(email, password); // Llamar a la función de login desde el contexto
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Iniciar Sesión</h1>
+      {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       <form className={styles.form} onSubmit={handleSubmit}>
-      <label htmlFor="email" className={styles.label}>Email</label>
+        <label htmlFor="email" className={styles.label}>Email</label>
         <input
           type="email"
           id="email"
@@ -34,8 +36,12 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-       <button type="submit" className={styles.button}>Ingresar</button>
+        <button type="submit" className={styles.button}>Ingresar</button>
       </form>
+      <p className={styles.registerText}>
+        ¿No tienes cuenta?{' '}
+        <a href="/register" className={styles.link}>Regístrate aquí</a>
+      </p>
     </div>
   );
 }
