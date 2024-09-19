@@ -1,21 +1,16 @@
-"use client"; // Habilita el uso de hooks en este archivo
+"use client";
 
-import { useRouter } from 'next/navigation'; // usa 'next/navigation' con el app router
-import styles from '../../styles/EventDetails.module.css';
-
-// Supongamos que estos son los eventos disponibles
-const events = [
-  { id: 1, title: 'Concierto de Rock', date: '10 Septiembre 2024' },
-  { id: 2, title: 'Feria de Tecnología', date: '20 Octubre 2024' },
-  { id: 3, title: 'Maratón de la Ciudad', date: '5 Noviembre 2024' },
-];
+import { useEventContext } from '../../../context/EventContext';
+import { useParams, useRouter } from 'next/navigation';
+import styles from '../../../styles/EventDetails.module.css';
 
 export default function EventDetail() {
+  const { events } = useEventContext();
+  const params = useParams();
   const router = useRouter();
-  const id = router.query?.id;
+  const id = parseInt(params.id, 10);
 
-  // Encontrar el evento basado en el ID pasado en la URL
-  const event = events.find((event) => event.id === parseInt(id, 10));
+  const event = events.find((event) => event.id === id);
 
   if (!event) {
     return <p>Evento no encontrado</p>;

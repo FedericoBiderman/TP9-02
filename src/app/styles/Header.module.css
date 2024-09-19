@@ -10,7 +10,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    max-width: 1910px; /* Máximo ancho para centrar el contenido */
+    max-width: 1850px; /* Máximo ancho para centrar el contenido */
     margin: 0 auto; /* Centrar el header horizontalmente */
     z-index: 1000;
   }
