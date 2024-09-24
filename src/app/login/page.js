@@ -1,16 +1,32 @@
 "use client";
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext'; // Ajusta la ruta según la estructura de tu proyecto
+import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useApiService } from '../services/apiService';
 import styles from './../styles/Login.module.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, errorMessage } = useAuth(); // Obtener la función de login y el mensaje de error del contexto
+  const { login, errorMessage, loading, clearError } = useAuth();
+  const api = useApiService();
+
+  useEffect(() => {
+    // Limpiar el error cuando el componente se desmonte o cuando cambie el email/password
+    return () => {
+      if (clearError) clearError();
+    };
+  }, [email, password, clearError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(email, password); // Llamar a la función de login desde el contexto
+    try {
+      await login(email, password);
+      // Ejemplo de uso del servicio API después del login
+      const response = await api.get('/api/user/profile');
+      console.log('Perfil del usuario:', response.data);
+    } catch (error) {
+      console.error('Error durante el login:', error);
+    }
   };
 
   return (
@@ -36,7 +52,9 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" className={styles.button}>Ingresar</button>
+        <button type="submit" className={styles.button} disabled={loading}>
+          {loading ? 'Cargando...' : 'Ingresar'}
+        </button>
       </form>
       <p className={styles.registerText}>
         ¿No tienes cuenta?{' '}
