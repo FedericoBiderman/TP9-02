@@ -1,21 +1,28 @@
 "use client";
 import { useState } from 'react';
-import styles from './../styles/Register.module.css';
+import { useAuth } from '../context/AuthContext';
+import styles from '../styles/Register.module.css';
 
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { register } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de registro
-    console.log(name, email, password);
+    try {
+      await register(name, email, password);
+      // Redirigir al usuario o mostrar un mensaje de éxito
+    } catch (error) {
+      console.error('Error durante el registro:', error);
+      // Mostrar mensaje de error al usuario
+    }
   };
 
   return (
     <div className={styles.container}>
-       <h1 className={styles.title}>Registro de Usuario</h1>
+      <h1 className={styles.title}>Registro de Usuario</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor="name" className={styles.label}>Nombre</label>
         <input

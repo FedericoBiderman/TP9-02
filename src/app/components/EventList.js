@@ -1,4 +1,3 @@
-
 "use client";
 import EventCard from './EventCard';
 import { useEventContext } from '../context/EventContext';

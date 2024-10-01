@@ -2,9 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 125vh;
   background: linear-gradient(135deg, #61dafb 0%, #21a1f1 100%);
-  padding: 2rem;
 }
 .hero {
   text-align: center;

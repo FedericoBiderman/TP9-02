@@ -1,94 +1,62 @@
 "use client";
 
-import { createContext, useState, useContext, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
-
-export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-  const router = useRouter();
-  const baseUrl = 'http://localhost:3000';
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) {
-      setToken(storedToken);
-      fetchUserData(storedToken);
+    // Verifica si hay un token en localStorage
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // Verifica el token con el servidor
+      axios.get('/api/user')
+        .then(response => {
+          setUser(response.data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     } else {
       setLoading(false);
     }
   }, []);
 
-  const fetchUserData = async (authToken) => {
-    try {
-      const response = await axios.get(`${baseUrl}/api/user/profile`, {
-        headers: { Authorization: `Bearer ${authToken}` }
-      });
-      setUser(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      logout();
-    }
-  };
-
   const login = async (email, password) => {
-    try {
-      setLoading(true);
-      const response = await axios.post(`${baseUrl}/api/user/login`, {
-        username: email,
-        password: password,
-      });
-
-      if (response.data.success) {
-        const authToken = response.data.token;
-        setToken(authToken);
-        localStorage.setItem('authToken', authToken);
-        await fetchUserData(authToken);
-        router.replace('/eventos');
-      } else {
-        setErrorMessage('Usuario o contraseña incorrectos.');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      setErrorMessage('Hubo un problema al intentar iniciar sesión.');
-    } finally {
-      setLoading(false);
-    }
+    const response = await axios.post('/api/login', { email, password });
+    const { token, user } = response.data;
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    setUser(user);
   };
 
-  const logout = useCallback(() => {
-    setToken(null);
+  const logout = () => {
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
     setUser(null);
-    localStorage.removeItem('authToken');
-    router.replace('/login');
-  }, [router]);
+  };
 
-  const clearError = useCallback(() => {
-    setErrorMessage('');
-  }, []);
-
-  const getToken = useCallback(() => token, [token]);
+  const register = async (name, email, password) => {
+    const response = await axios.post('/api/register', { name, email, password });
+    const { token, user } = response.data;
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    setUser(user);
+  };
 
   return (
-    <AuthContext.Provider value={{
-      token,
-      user,
-      login,
-      logout,
-      loading,
-      errorMessage,
-      clearError,
-      getToken
-    }}>
+    <AuthContext.Provider value={{ user, login, logout, register, loading }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

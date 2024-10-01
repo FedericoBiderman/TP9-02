@@ -1,33 +1,48 @@
-"use client";
-
-import { useEventContext } from '../../../context/EventContext';
-import { useParams, useRouter } from 'next/navigation';
-import styles from '../../../styles/EventDetails.module.css';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+import styles from '../../styles/EventDetail.module.css';
 
 export default function EventDetail() {
-  const { events } = useEventContext();
-  const params = useParams();
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
-  const id = parseInt(params.id, 10);
+  const { id } = router.query;
+  const { user } = useAuth();
 
-  const event = events.find((event) => event.id === id);
+  useEffect(() => {
+    if (id) {
+      const fetchEvent = async () => {
+        try {
+          const response = await axios.get(`/api/event/${id}`);
+          setEvent(response.data);
+          setLoading(false);
+        } catch (err) {
+          setError('Error al cargar el evento');
+          setLoading(false);
+        }
+      };
 
-  if (!event) {
-    return <p>Evento no encontrado</p>;
-  }
+      fetchEvent();
+    }
+  }, [id]);
+
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>{error}</div>;
+  if (!event) return <div>No se encontró el evento</div>;
 
   return (
     <div className={styles.container}>
-      <div className={styles['event-details']}>
-        <h1>{event.title}</h1>
-        <p className={styles.date}>Fecha: {event.date}</p>
-        <p className={styles['additional-info']}>
-          Aquí se mostrarán más detalles acerca de este evento. Puedes agregar
-          información relevante como la ubicación, descripción del evento, o
-          cualquier otro detalle importante.
-        </p>
-        <button onClick={() => router.push('/eventos')}>Volver a Eventos</button>
-      </div>
+      <h1 className={styles.title}>{event.title}</h1>
+      <p className={styles.date}>{event.date}</p>
+      <p className={styles.description}>{event.description}</p>
+      {user ? (
+        <button className={styles.button}>Registrarse al evento</button>
+      ) : (
+        <p>Inicia sesión para registrarte en este evento</p>
+      )}
     </div>
   );
 }
