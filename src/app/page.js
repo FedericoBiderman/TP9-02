@@ -13,7 +13,7 @@ export default function Page() {
             ferias, conferencias y mucho más. ¡No te lo pierdas!
           </p>
           <div className={styles.ctaButtons}>
-            <Link href="/eventos">
+            <Link href="/login">
               <button className={styles.button}>Ver Eventos</button>
             </Link>
             <Link href="/login">

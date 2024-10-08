@@ -1,10 +1,11 @@
+import { useContext } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
 const baseURL = 'http://localhost:3000';
 
 export const useApiService = () => {
-  const { getToken } = useAuth();
+  const { getToken } = useContext(AuthContext);  
 
   const apiClient = axios.create({
     baseURL,
@@ -13,10 +14,9 @@ export const useApiService = () => {
     },
   });
 
-  apiClient.interceptors.request.use((config) => {
-    const token = getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  apiClient.interceptors.request.use((config) => {    
+    if (getToken) {
+      config.headers.Authorization = `Bearer ${getToken}`;
     }
     return config;
   });

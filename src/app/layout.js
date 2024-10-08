@@ -7,14 +7,14 @@ import { EventProvider } from './context/EventContext'; // Asegúrate de que la 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body>
-        <Header />
+      <body>        
         <AuthProvider>
+          <Header />
           <EventProvider>
             <main>{children}</main>
           </EventProvider>
-        </AuthProvider>
-        <Footer />
+          <Footer />
+        </AuthProvider>        
       </body>
     </html>
   );

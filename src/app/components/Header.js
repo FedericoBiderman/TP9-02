@@ -1,11 +1,12 @@
 "use client";
+
+import { useContext } from 'react';
 import Link from 'next/link';
 import styles from './../styles/Header.module.css';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Header() {
-  const handleLogout = () => {
-    window.location.href = '/login';  // Redirige al iniciar sesión
-  };
+  const {logout} = useContext(AuthContext); 
 
   return (
     <header className={styles.header}>
@@ -20,7 +21,7 @@ export default function Header() {
         <Link href="/contact">Contacto</Link>
       </nav>
       <div className={styles.userMenu}>
-        <button className={styles.logoutButton} onClick={handleLogout}>
+        <button className={styles.logoutButton} onClick={()=>logout()}>
           Cerrar Sesión
         </button>
       </div>
