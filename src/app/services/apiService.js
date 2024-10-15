@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 const baseURL = 'http://localhost:3000';
 
 export const useApiService = () => {
-  const { getToken } = useContext(AuthContext);  
+  const authContext = useContext(AuthContext);
 
   const apiClient = axios.create({
     baseURL,
@@ -14,9 +14,10 @@ export const useApiService = () => {
     },
   });
 
-  apiClient.interceptors.request.use((config) => {    
-    if (getToken) {
-      config.headers.Authorization = `Bearer ${getToken}`;
+  apiClient.interceptors.request.use((config) => {
+    const token = authContext?.getToken;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   });

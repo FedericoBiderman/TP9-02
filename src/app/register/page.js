@@ -1,51 +1,57 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useApiService } from '../services/apiService';
-import styles from '../styles/Register.module.css';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import styles from './../styles/Register.module.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
-  const [first_name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { register, errorMessage, loading, clearError } = useAuth();
-  const api = useApiService();
+  const { register, getToken, loading, errorMessage, clearError } = useContext(AuthContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirigir si el usuario ya está autenticado
+    if (getToken) {
+      router.push('/eventos');
+    }
+  }, [getToken, router]);
 
   useEffect(() => {
     // Limpiar el error cuando el componente se desmonte o cuando cambien los campos
     return () => {
       if (clearError) clearError();
     };
-  }, [first_name, username, password, clearError]);
+  }, [firstName, username, password, clearError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(first_name, username, password);
-      // Ejemplo de uso del servicio API después del registro
-      const response = await api.get('/api/user/profile');
-      console.log('Perfil del usuario:', response.data);
-      // Redirigir al usuario a la página principal o de perfil
-      window.location.href = '/login';
+      await register(firstName, username, password);
+      // La redirección se maneja en el AuthContext después de un registro exitoso
     } catch (error) {
       console.error('Error durante el registro:', error);
-      // El manejo de errores se realiza en el contexto de autenticación
     }
   };
 
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Registro de Usuario</h1>
+      <h1 className={styles.title}>Registro</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label htmlFor="first_name" className={styles.label}>Nombre</label>
+        <label htmlFor="firstName" className={styles.label}>Nombre</label>
         <input
           type="text"
-          id="first_name"
+          id="firstName"
           className={styles.input}
-          value={first_name}
-          onChange={(e) => setName(e.target.value)}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
         <label htmlFor="username" className={styles.label}>Email</label>
@@ -67,7 +73,7 @@ export default function Register() {
           required
         />
         <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? 'Registrando...' : 'Registrarse'}
+          {loading ? 'Cargando...' : 'Registrarse'}
         </button>
       </form>
       <p className={styles.loginText}>

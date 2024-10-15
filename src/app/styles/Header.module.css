@@ -60,6 +60,17 @@
     transition: background-color 0.3s ease;
   }
   
+  .loginButton{
+    background-color: #4b5dff;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
   .logoutButton:hover {
     background-color: #ff333a;
   }
