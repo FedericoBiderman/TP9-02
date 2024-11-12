@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { login, getToken, loading, errorMessage, clearError } = useContext(AuthContext);  
   const router = useRouter();
 
@@ -19,19 +20,36 @@ export default function Login() {
   }, [getToken, router]);
 
   useEffect(() => {
-    // Limpiar el error cuando el componente se desmonte o cuando cambie el username/password
+    // Limpiar el error cuando el componente se desmonte o cuando cambie el password
     return () => {
       if (clearError) clearError();
     };
-  }, [username, password, clearError]);
+  }, [password, clearError]);
+
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError('El campo contraseña es obligatorio.');
+      return false;
+    } else if (password.length < 3) {
+      setPasswordError('La contraseña debe tener al menos 3 letras.');
+      return false;
+    } else {
+      setPasswordError('');
+      return true;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validatePassword()) return;
+
     try {
       await login(username, password);
       // La redirección se maneja en el AuthContext después de un login exitoso
     } catch (error) {
       console.error('Error durante el login:', error);
+      setPasswordError('Contraseña inválida'); // Mostrar error en caso de credenciales incorrectas
     }
   };
 
@@ -53,7 +71,13 @@ export default function Login() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-        <label htmlFor="password" className={styles.label}>Contraseña</label>
+        
+        <label 
+          htmlFor="password" 
+          className={`${styles.label} ${passwordError ? styles.errorBorder : ''}`}
+        >
+          Contraseña
+        </label>
         <input
           type="password"
           id="password"
@@ -62,8 +86,10 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? 'Cargando...' : 'Ingresar'}
+        {passwordError && <p className={styles.error}>{passwordError}</p>}
+
+        <button type="submit" className={styles.button}>
+          {'Ingresar'}
         </button>
       </form>
       <p className={styles.registerText}>

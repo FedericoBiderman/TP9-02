@@ -6,7 +6,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function Register() {
-  const [firstName, setFirstName] = useState('');
+  const [first_name, setFirstName] = useState('');
+
+  const [last_name, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { register, getToken, loading, errorMessage, clearError } = useContext(AuthContext);
@@ -24,12 +26,12 @@ export default function Register() {
     return () => {
       if (clearError) clearError();
     };
-  }, [firstName, username, password, clearError]);
+  }, [first_name, last_name, username, password, clearError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(firstName, username, password);
+      await register(first_name, last_name, username, password);
       // La redirección se maneja en el AuthContext después de un registro exitoso
     } catch (error) {
       console.error('Error durante el registro:', error);
@@ -45,13 +47,22 @@ export default function Register() {
       <h1 className={styles.title}>Registro</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label htmlFor="firstName" className={styles.label}>Nombre</label>
+        <label htmlFor="first_name" className={styles.label}>Nombre</label>
         <input
           type="text"
-          id="firstName"
+          id="first_name"
           className={styles.input}
-          value={firstName}
+          value={first_name}
           onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
+        <label htmlFor="last_name" className={styles.label}>Apellido</label>
+        <input
+          type="text"
+          id="last_name"
+          className={styles.input}
+          value={last_name}
+          onChange={(e) => setLastName(e.target.value)}
           required
         />
         <label htmlFor="username" className={styles.label}>Email</label>

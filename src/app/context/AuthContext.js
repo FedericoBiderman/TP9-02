@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setErrorMessage(null);
     try {
-      const response = await apiClient.post('/api/user/login', { username, password });
+      const response = await apiClient.post('api/user/login', { username, password });
       const { token } = response.data;
       localStorage.setItem('token', token);
       setToken(token);
@@ -51,11 +51,11 @@ export function AuthProvider({ children }) {
     router.push('/');
   };
 
-  const register = async (first_name, username, password) => {
+  const register = async (first_name, last_name, username, password) => {
     setLoading(true);
     setErrorMessage(null);
     try {
-      const response = await apiClient.post('/api/user/register', { first_name, username, password });
+      const response = await apiClient.post('api/user/register', { first_name, last_name, username, password });
       const { token } = response.data;
       localStorage.setItem('token', token);
       setToken(token);
