@@ -4,6 +4,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
+import { cookies } from 'next/headers'
+
 export const AuthContext = createContext();
 
 const baseURL = 'http://localhost:3000';
@@ -13,6 +15,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const router = useRouter();
+  const cookieStore = await cookies()
 
   useEffect(() => {
     const tokenStorage = localStorage.getItem('token');
@@ -34,7 +37,7 @@ export function AuthProvider({ children }) {
     try {
       const response = await apiClient.post('api/user/login', { username, password });
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      cookieStore.set('token', token)
       setToken(token);
       router.push('/eventos');
     } catch (error) {
