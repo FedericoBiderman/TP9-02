@@ -3,8 +3,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-
-import { cookies } from 'next/headers'
+import Cookies from 'js-cookie'; // Requiere instalación si decides usar esta librería
 
 export const AuthContext = createContext();
 
@@ -15,10 +14,9 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const router = useRouter();
-  const cookieStore = await cookies()
 
   useEffect(() => {
-    const tokenStorage = localStorage.getItem('token');
+    const tokenStorage = Cookies.get('token'); // Usa Cookies en lugar de cookies() de Next.js
     if (tokenStorage) {
       setToken(tokenStorage);
     }
@@ -37,7 +35,7 @@ export function AuthProvider({ children }) {
     try {
       const response = await apiClient.post('api/user/login', { username, password });
       const { token } = response.data;
-      cookieStore.set('token', token)
+      Cookies.set('token', token); // Almacena el token en las cookies
       setToken(token);
       router.push('/eventos');
     } catch (error) {
@@ -49,7 +47,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    Cookies.remove('token'); // Elimina el token de las cookies
     setToken(null);
     router.push('/');
   };
@@ -60,7 +58,7 @@ export function AuthProvider({ children }) {
     try {
       const response = await apiClient.post('api/user/register', { first_name, last_name, username, password });
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      Cookies.set('token', token);
       setToken(token);
       router.push('/login');
     } catch (error) {
