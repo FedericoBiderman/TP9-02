@@ -14,9 +14,6 @@ export function middleware(req) {
   if (pathname.startsWith('/eventos') && !token) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
-  if (pathname.startsWith('/eventos') && !token) {
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
 
   // Si el usuario intenta acceder a /login estando logueado (token presente), redirigir a /home
   if (pathname === '/login' && token) {

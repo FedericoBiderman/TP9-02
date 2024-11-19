@@ -3,21 +3,12 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import styles from './../styles/Login.module.css';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const { login, getToken, loading, errorMessage, clearError } = useContext(AuthContext);  
-  const router = useRouter();
-
-  useEffect(() => {
-    // Redirigir si el usuario ya está autenticado
-    if (getToken) {
-      router.push('/eventos');
-    }
-  }, [getToken, router]);
+  const { login, loading, errorMessage, clearError } = useContext(AuthContext);  
 
   useEffect(() => {
     // Limpiar el error cuando el componente se desmonte o cuando cambie el password

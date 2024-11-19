@@ -57,9 +57,6 @@ export function AuthProvider({ children }) {
     setErrorMessage(null);
     try {
       const response = await apiClient.post('api/user/register', { first_name, last_name, username, password });
-      const { token } = response.data;
-      Cookies.set('token', token);
-      setToken(token);
       router.push('/login');
     } catch (error) {
       setErrorMessage(error.response?.data?.message || 'Error durante el registro');

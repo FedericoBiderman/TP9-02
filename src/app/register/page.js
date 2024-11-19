@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import styles from './../styles/Register.module.css';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export default function Register() {
   const [first_name, setFirstName] = useState('');
@@ -11,15 +10,8 @@ export default function Register() {
   const [last_name, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { register, getToken, loading, errorMessage, clearError } = useContext(AuthContext);
-  const router = useRouter();
+  const { register, loading, errorMessage, clearError } = useContext(AuthContext);
 
-  useEffect(() => {
-    // Redirigir si el usuario ya está autenticado
-    if (getToken) {
-      router.push('/eventos');
-    }
-  }, [getToken, router]);
 
   useEffect(() => {
     // Limpiar el error cuando el componente se desmonte o cuando cambien los campos
